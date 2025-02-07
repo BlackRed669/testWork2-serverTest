@@ -31,9 +31,14 @@ module.exports = {
 
       let connectUser = await User.findByPk(connectUserId);
 
-      return Promise.all( messages.map(async (c) => {
+      return Promise.all(messages.map(async (c) => {
         let messageAttr = c.fromId === user.id ? { sent: true, name: "" } : { sent: false, name: "" };
-        const result = { message: c.content, sent: messageAttr.sent, name: messageAttr.name, id: c.id };
+        const result = {
+          message: c.content,
+          sent: messageAttr.sent,
+          name: messageAttr.name,
+          id: c.id
+        };
         return result;
       }));
 

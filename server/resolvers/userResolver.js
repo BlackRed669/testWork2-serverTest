@@ -1,9 +1,25 @@
 const User = require("../models/user.js");
+const Chat = require("../models/chat.js");
 const Messages = require("../models/message.js");
 const { Op } = require("sequelize");
 
 module.exports = {
   Query: {
+
+    getUser: async (_, { myId, chatId }) => {
+      if (myId && chatId) {
+        console.log("kwehfiewfh");
+        let user = await User.findByPk(myId);
+        let chat = await Chat.findByPk(chatId);
+        let connectUserId = chat.hostUser === user.id ? chat.connectUser : chat.hostUser;
+        let connectUser = await User.findByPk(connectUserId);
+        
+        return connectUser;
+      }
+    },
+
+
+
     getAllUsers: async (_, { myId }) => {
 
       if (myId) {
@@ -27,7 +43,7 @@ module.exports = {
               },
               order: [["createdAt", "DESC"]],
             });
-            
+
             const result = {
 
               chatId: chats?.chatId ?? 0,
@@ -35,7 +51,7 @@ module.exports = {
               icon: u.icon,
               name: u.name,
               id: myUser.id,
-              connectUserId:u.id
+              connectUserId: u.id
             };
             return result;
           })

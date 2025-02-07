@@ -10,6 +10,10 @@ module.exports = gql`
     getAllUsers(myId:String):[User]
   }
 
+  type Query{
+    getUser(myId:Int,chatId:Int):User
+  }
+
   type User {
     id: ID
     name: String
